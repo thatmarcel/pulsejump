@@ -27,6 +27,19 @@ public class Arduino {
 			return false;
 		}
 	}
+
+	// Added for Pulsejump
+	public Boolean hasMessage() {
+		comPort.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING, 0, 0);
+		Scanner in = new Scanner(comPort.getInputStream());
+		return in.hasNext();
+	}
+
+	// Added for Pulsejump
+	@SuppressWarnings("StatementWithEmptyBody")
+	public void waitForMessage() {
+		while (!hasMessage()) {}
+	}
 	
 	public void closeConnection() {
 		comPort.closePort();

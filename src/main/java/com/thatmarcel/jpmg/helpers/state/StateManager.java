@@ -1,6 +1,7 @@
 package com.thatmarcel.jpmg.helpers.state;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.thatmarcel.jpmg.JPMGApp;
 import com.thatmarcel.jpmg.helpers.misc.GenericManager;
 import com.thatmarcel.jpmg.helpers.game.GameManager;
 import com.thatmarcel.jpmg.helpers.input.InputManager;

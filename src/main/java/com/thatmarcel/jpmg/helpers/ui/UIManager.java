@@ -29,12 +29,8 @@ public class UIManager implements GenericManager {
         inGameUI.remove();
 
         switch (state) {
-            case MAIN_MENU:
-                mainMenuUI.add();
-                break;
-            case PLAYING1:
-                inGameUI.add();
-                break;
+            case MAIN_MENU -> mainMenuUI.add();
+            case PLAYING1 -> inGameUI.add();
         }
     }
 

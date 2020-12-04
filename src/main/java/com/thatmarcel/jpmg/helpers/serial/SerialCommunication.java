@@ -7,19 +7,18 @@ import com.thatmarcel.jpmg.JPMGApp;
 import com.thatmarcel.jpmg.helpers.config.Config;
 import com.thatmarcel.jpmg.helpers.strings.Strings;
 import com.thatmarcel.jpmg.helpers.ui.UIManager;
-import javafx.embed.swing.JFXPanel;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class SerialCommunication {
     private static Arduino arduino;
@@ -29,11 +28,13 @@ public class SerialCommunication {
     private static PortDropdownMenu portList;
     private static JButton refreshButton;
 
-    private static int beatsInLastInterval = 0;
-
     public static int lastBPM;
 
+    private static ArrayList<Instant> pulseTimings;
+
     public static void start() {
+        pulseTimings = new ArrayList<>();
+
         final SwingNode swingNode = new SwingNode();
 
         SwingUtilities.invokeLater(() -> {
@@ -114,26 +115,37 @@ public class SerialCommunication {
     }
 
     private static void startPolling() {
-        FXGL.getGameTimer().runAtInterval(() ->{
-            int bpm = beatsInLastInterval * (60 / 3);
-            UIManager.activeInstance.updateBPM(bpm);
-            lastBPM = bpm;
-            beatsInLastInterval = 0;
-        }, Duration.seconds(3));
-
         if (Config.SerialConnection.isTesting) {
-            FXGL.getGameTimer().runAtInterval(() ->{
-                beatsInLastInterval++;
+            FXGL.getGameTimer().runAtInterval(() -> {
+                handlePulse();
                 FXGL.getGameTimer().runOnceAfter(UIManager.activeInstance::doHeartbeat, Duration.millis(10));
             }, Duration.seconds(0.6));
         } else {
             new Thread(() -> {
-                while (true) {
-                    arduino.serialRead(1);
-                    beatsInLastInterval++;
+                while (JPMGApp.isRunning) {
+                    arduino.waitForMessage();
+                    handlePulse();
                     FXGL.getGameTimer().runOnceAfter(UIManager.activeInstance::doHeartbeat, Duration.millis(10));
                 }
-            });
+            }).start();
         }
+    }
+
+    private static void handlePulse() {
+        pulseTimings.add(Instant.now());
+        updateBPM();
+    }
+
+    private static void updateBPM() {
+        if (pulseTimings.size() < 2) {
+            return;
+        }
+
+        pulseTimings.removeIf(pulseTiming -> Instant.now().isAfter(pulseTiming.plus(java.time.Duration.ofSeconds(10))));
+        long diffMillis = ChronoUnit.MILLIS.between(pulseTimings.get(0), Instant.now());
+        double diffSeconds = (double) diffMillis / 1000;
+        int bpm = (int) (pulseTimings.size() * (60 / diffSeconds));
+        lastBPM = bpm;
+        FXGL.getGameTimer().runOnceAfter(() -> UIManager.activeInstance.updateBPM(bpm), Duration.millis(10));
     }
 }

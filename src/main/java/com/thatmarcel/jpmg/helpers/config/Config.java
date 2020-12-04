@@ -6,7 +6,7 @@ import javafx.util.Duration;
 
 public class Config {
     public static class Window {
-        public static final Boolean shouldUseFullscreen = true;
+        public static final Boolean shouldUseFullscreen = false;
 
         // Only used when the game is not running in fullscreen
         public static final int width = 1280;

@@ -101,7 +101,7 @@ public class Player {
                 .build();
 
         entity.setX(RelativePosition.combinedHalfPercentage(6));
-        entity.setY(RelativePosition.heightPercentage(50));
+        entity.setY(RelativePosition.heightPercentage(40));
 
         FXGL.getGameScene().getViewport().bindToEntity(entity, entity.getX() + RelativePosition.combinedHalfPercentage(32), entity.getY());
         FXGL.getGameScene().getViewport().setLazy(true);

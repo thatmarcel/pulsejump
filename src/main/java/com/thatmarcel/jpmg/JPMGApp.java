@@ -4,10 +4,12 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.thatmarcel.jpmg.helpers.config.Config;
 import com.thatmarcel.jpmg.helpers.state.GameState;
 import com.thatmarcel.jpmg.helpers.state.StateManager;
 import com.thatmarcel.jpmg.helpers.strings.Strings;
+import javafx.util.Duration;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class JPMGApp extends GameApplication {
@@ -18,6 +20,8 @@ public class JPMGApp extends GameApplication {
     // Only used when the game is not running in fullscreen
     public Integer width = Config.Window.width;
     public Integer height = Config.Window.height;
+
+    public static Boolean isRunning;
 
     public static JPMGApp activeInstance;
 
@@ -60,6 +64,14 @@ public class JPMGApp extends GameApplication {
         stateManager = new StateManager();
         stateManager.initialize();
         stateManager.activateState(GameState.MAIN_MENU);
+
+        // Will run after the game window has initialized,
+        // used in SerialCommunication to exit the loop
+        // when the game window is closed
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            isRunning = true;
+            FXGL.getGameScene().getRoot().getScene().getWindow().setOnCloseRequest(ev -> isRunning = false);
+        }, Duration.millis(10));
     }
 
     public static void main(String[] args) {

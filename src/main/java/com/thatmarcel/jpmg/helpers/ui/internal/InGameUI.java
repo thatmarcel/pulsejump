@@ -35,10 +35,16 @@ public class InGameUI {
     }
 
     public void updateBPM(Integer bpm) {
-        bpmText.setText(bpm.toString());
+        if (added) {
+            bpmText.setText(bpm.toString());
+        }
     }
 
     public void doHeartbeat() {
+        if (!added) {
+            return;
+        }
+
         ScaleTransition st1 = new ScaleTransition(Duration.seconds(0.1), heartTexture);
         st1.setFromX(1);
         st1.setFromY(1);
