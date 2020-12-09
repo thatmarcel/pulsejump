@@ -40,11 +40,11 @@ public class Config {
         public static final int jumpHeight = RelativePosition.combinedHalfPercentage(76);
         public static final Duration jumpTimeout = Duration.seconds(0.3);
 
-        public static double farJumpMultiplier = 1.25;
+        public static final double farJumpMultiplier = 1.25;
         public static final Duration farJumpDuration = jumpTimeout.multiply(4);
         public static final int farJumpXVelocity = RelativePosition.combinedHalfPercentage(50);
 
-        public static double highFarJumpMultiplier = 1.75;
+        public static final double highFarJumpMultiplier = 1.75;
         public static final Duration highFarJumpDuration = jumpTimeout.multiply(4);
         public static final int highFarJumpXVelocity = RelativePosition.combinedHalfPercentage(50);
     }
@@ -52,21 +52,26 @@ public class Config {
     public static class Gameplay {
         public static final Boolean autoRun = true;
         public static final Boolean autoRunAllowsJumping = false;
+        public static final Boolean leftMoveEnabled = false;
     }
 
     public static class Passages {
         public static class TypeOne {
-            public static int platformLength = 16;
-            public static int internalDistance = RelativePosition.combinedHalfPercentage(32);
-            public static int defaultExternalDistance = internalDistance;
+            public static final int platformLength = 16;
+            public static final int internalDistance = RelativePosition.combinedHalfPercentage(32);
+            public static final int defaultExternalDistance = internalDistance;
         }
     }
 
     public static class PulseAction {
-        public static Boolean isTesting = false;
+        public static final Boolean isTesting = false;
     }
 
     public static class SerialConnection {
-        public static Boolean isTesting = false;
+        public static final Boolean isTesting = false;
+    }
+
+    public static class HeartrateSource {
+        public static final Boolean shouldUseWatchCommunication = true;
     }
 }

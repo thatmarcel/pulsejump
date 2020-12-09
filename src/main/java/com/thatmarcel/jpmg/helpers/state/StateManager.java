@@ -2,12 +2,14 @@ package com.thatmarcel.jpmg.helpers.state;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.thatmarcel.jpmg.JPMGApp;
+import com.thatmarcel.jpmg.helpers.config.Config;
 import com.thatmarcel.jpmg.helpers.misc.GenericManager;
 import com.thatmarcel.jpmg.helpers.game.GameManager;
 import com.thatmarcel.jpmg.helpers.input.InputManager;
 import com.thatmarcel.jpmg.helpers.pulse.PulseAction;
 import com.thatmarcel.jpmg.helpers.serial.SerialCommunication;
 import com.thatmarcel.jpmg.helpers.ui.UIManager;
+import com.thatmarcel.jpmg.networking.WatchCommunication;
 
 public class StateManager implements GenericManager {
     private GameState currentState;
@@ -29,7 +31,11 @@ public class StateManager implements GenericManager {
         this.gameManager = new GameManager();
         this.gameManager.initialize();
 
-        SerialCommunication.start();
+        if (Config.HeartrateSource.shouldUseWatchCommunication) {
+            WatchCommunication.start();
+        } else {
+            SerialCommunication.start();
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
+@SuppressWarnings("UnusedReturnValue")
 public class PulseAction {
     public static PulseAction create() {
         return new PulseAction();
@@ -24,6 +25,8 @@ public class PulseAction {
 
     private int lastRequestId = -1;
 
+    public static int lastBPM;
+
     PulseAction() {
         activeInstance = this;
     }
@@ -33,7 +36,7 @@ public class PulseAction {
         this.callback = callback;
         UIManager.activeInstance.showPulseActionUI();
 
-        int previousBPM = SerialCommunication.lastBPM;
+        int previousBPM = lastBPM;
 
         int requestId = new Random().nextInt(10000);
         lastRequestId = requestId;
@@ -46,10 +49,13 @@ public class PulseAction {
                     return;
                 }
 
+                System.out.println(previousBPM);
+                System.out.println(lastBPM);
+
                 resultAvailable(
-                        SerialCommunication.lastBPM > previousBPM
+                        lastBPM > previousBPM
                                 ? PulseType.UP
-                                : SerialCommunication.lastBPM < previousBPM ? PulseType.DOWN : PulseType.STAY
+                                : lastBPM < previousBPM ? PulseType.DOWN : PulseType.STAY
                 );
             }, Duration.seconds(10));
         }

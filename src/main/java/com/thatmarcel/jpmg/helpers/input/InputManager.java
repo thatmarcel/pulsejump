@@ -45,8 +45,7 @@ public class InputManager implements GenericManager {
                 }
 
                 @Override
-                protected void onActionEnd() {
-                }
+                protected void onActionEnd() { }
             }, Config.Controls.menuKey);
 
             FXGL.getInput().addAction(new UserAction("Jump") {
@@ -58,8 +57,8 @@ public class InputManager implements GenericManager {
 
                     jumpKeyHeld = true;
 
-                    if (currentState != GameState.MAIN_MENU && Player.activeInstance != null) {
-                        Player.activeInstance.move(MovementType.FAR_JUMP);
+                    if (currentState != GameState.MAIN_MENU && Player.activeInstance != null && PulseAction.activeInstance == null) {
+                        Player.activeInstance.move(MovementType.JUMP);
                     }
                 }
 
@@ -76,7 +75,7 @@ public class InputManager implements GenericManager {
                         return;
                     }
 
-                    if (currentState != GameState.MAIN_MENU && Player.activeInstance != null) {
+                    if (currentState != GameState.MAIN_MENU && Config.Gameplay.leftMoveEnabled && Player.activeInstance != null && PulseAction.activeInstance == null) {
                         Player.activeInstance.move(MovementType.LEFT);
                     }
                 }
@@ -100,7 +99,7 @@ public class InputManager implements GenericManager {
                         return;
                     }
 
-                    if (currentState != GameState.MAIN_MENU && Player.activeInstance != null) {
+                    if (currentState != GameState.MAIN_MENU && Player.activeInstance != null && PulseAction.activeInstance == null) {
                         Player.activeInstance.move(MovementType.RIGHT);
                     }
                 }

@@ -5,6 +5,7 @@ import arduino.PortDropdownMenu;
 import com.almasb.fxgl.dsl.FXGL;
 import com.thatmarcel.jpmg.JPMGApp;
 import com.thatmarcel.jpmg.helpers.config.Config;
+import com.thatmarcel.jpmg.helpers.pulse.PulseAction;
 import com.thatmarcel.jpmg.helpers.strings.Strings;
 import com.thatmarcel.jpmg.helpers.ui.UIManager;
 import javafx.embed.swing.SwingNode;
@@ -147,5 +148,6 @@ public class SerialCommunication {
         int bpm = (int) (pulseTimings.size() * (60 / diffSeconds));
         lastBPM = bpm;
         FXGL.getGameTimer().runOnceAfter(() -> UIManager.activeInstance.updateBPM(bpm), Duration.millis(10));
+        PulseAction.lastBPM = bpm;
     }
 }

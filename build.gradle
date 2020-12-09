@@ -21,6 +21,9 @@ dependencies {
     compile 'com.github.almasb:fxgl:11.11'
 
     compile 'com.fazecast:jSerialComm:2.6.2'
+
+    compile group: 'com.pubnub', name: 'pubnub-gson', version: '4.33.0'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
 }
 
 jar {
